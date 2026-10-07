@@ -1,6 +1,6 @@
 # Ironhouse Fitness Studio
 
-Single-page fitness studio site built with plain HTML5 and CSS3 — no frameworks, no build step.
+Single-page fitness studio site built with plain HTML5 and CSS3 — no frameworks, no build step
 
 ## Run it
 
