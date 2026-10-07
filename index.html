@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ironhouse Fitness Studio — class schedule, trainer bios, and membership tiers." />
+  <title>Ironhouse Fitness Studio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="logo" href="#top">IRON<span>HOUSE</span></a>
+      <ul class="nav-links">
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#trainers">Trainers</a></li>
+        <li><a href="#membership">Membership</a></li>
+        <li><a href="#contact" class="nav-cta">Join now</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <p class="eyebrow">Est. 2016 · Johannesburg</p>
+        <h1>Train hard. Recover harder.</h1>
+        <p class="hero-sub">
+          Strength, conditioning and mobility classes led by coaches who actually
+          coach. Small groups, real programming, zero ego.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#membership">See memberships</a>
+          <a class="btn btn-ghost" href="#schedule">This week's classes</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule" aria-labelledby="schedule-heading">
+      <div class="container">
+        <h2 id="schedule-heading">Class schedule</h2>
+        <p class="section-sub">All classes are 60 minutes. Book up to 7 days ahead.</p>
+
+        <div class="schedule-grid" role="table" aria-label="Weekly class schedule">
+          <div class="schedule-head" role="row">
+            <span role="columnheader">Time</span>
+            <span role="columnheader">Mon</span>
+            <span role="columnheader">Tue</span>
+            <span role="columnheader">Wed</span>
+            <span role="columnheader">Thu</span>
+            <span role="columnheader">Fri</span>
+            <span role="columnheader">Sat</span>
+          </div>
+          <div class="schedule-row" role="row">
+            <span class="time" role="rowheader">06:00</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-conditioning">Conditioning</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-conditioning">Conditioning</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-mobility">Mobility</span>
+          </div>
+          <div class="schedule-row" role="row">
+            <span class="time" role="rowheader">12:15</span>
+            <span class="cls cls-conditioning">Express HIIT</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-conditioning">Express HIIT</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-conditioning">Express HIIT</span>
+            <span class="cls cls-empty">—</span>
+          </div>
+          <div class="schedule-row" role="row">
+            <span class="time" role="rowheader">17:30</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-mobility">Mobility</span>
+            <span class="cls cls-strength">Strength</span>
+            <span class="cls cls-mobility">Mobility</span>
+            <span class="cls cls-conditioning">Conditioning</span>
+            <span class="cls cls-strength">Open gym</span>
+          </div>
+          <div class="schedule-row" role="row">
+            <span class="time" role="rowheader">19:00</span>
+            <span class="cls cls-mobility">Mobility</span>
+            <span class="cls cls-conditioning">Conditioning</span>
+            <span class="cls cls-mobility">Mobility</span>
+            <span class="cls cls-conditioning">Conditioning</span>
+            <span class="cls cls-empty">—</span>
+            <span class="cls cls-empty">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="trainers" aria-labelledby="trainers-heading">
+      <div class="container">
+        <h2 id="trainers-heading">Meet the trainers</h2>
+        <p class="section-sub">Four coaches, one standard: technique first.</p>
+
+        <div class="trainer-flex">
+          <article class="trainer-card">
+            <div class="avatar" aria-hidden="true">TM</div>
+            <h3>Thandi Mokoena</h3>
+            <p class="role">Head coach · Strength</p>
+            <p>12 years under the bar. Thandi runs the strength program and
+              insists on perfect hinges before heavy deadlifts.</p>
+          </article>
+          <article class="trainer-card">
+            <div class="avatar" aria-hidden="true">KP</div>
+            <h3>Kabelo Petersen</h3>
+            <p class="role">Conditioning</p>
+            <p>Former 800m national squad. Kabelo's HIIT blocks are short,
+              brutal, and weirdly fun.</p>
+          </article>
+          <article class="trainer-card">
+            <div class="avatar" aria-hidden="true">AV</div>
+            <h3>Anika van der Merwe</h3>
+            <p class="role">Mobility · Rehab</p>
+            <p>Physio-turned-coach. Anika keeps the whole studio moving well
+              and coming back from injuries stronger.</p>
+          </article>
+          <article class="trainer-card">
+            <div class="avatar" aria-hidden="true">SN</div>
+            <h3>Sipho Ndlovu</h3>
+            <p class="role">Strength · Beginners</p>
+            <p>Sipho onboards every new member. Patient, precise, and allergic
+              to bad squat depth.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="membership" aria-labelledby="membership-heading">
+      <div class="container">
+        <h2 id="membership-heading">Membership tiers</h2>
+        <p class="section-sub">No contracts. Cancel any month.</p>
+
+        <div class="pricing-grid">
+          <article class="price-card">
+            <h3>Off-peak</h3>
+            <p class="price">R650<span>/mo</span></p>
+            <ul>
+              <li>Classes before 16:00</li>
+              <li>Open gym Saturdays</li>
+              <li>1 guest pass per month</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Choose off-peak</a>
+          </article>
+          <article class="price-card price-card-featured">
+            <p class="badge">Most popular</p>
+            <h3>All access</h3>
+            <p class="price">R890<span>/mo</span></p>
+            <ul>
+              <li>Unlimited classes, any time</li>
+              <li>Open gym 7 days a week</li>
+              <li>Monthly movement screen</li>
+              <li>2 guest passes per month</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Choose all access</a>
+          </article>
+          <article class="price-card">
+            <h3>Coached+</h3>
+            <p class="price">R1 450<span>/mo</span></p>
+            <ul>
+              <li>Everything in All access</li>
+              <li>1-on-1 session every month</li>
+              <li>Personalised program</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Choose coached+</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="contact" aria-labelledby="contact-heading">
+      <div class="container contact-inner">
+        <h2 id="contact-heading">Come try a class</h2>
+        <p>First week is free. 44 Juta Street, Braamfontein, Johannesburg.</p>
+        <a class="btn btn-primary" href="mailto:hello@ironhouse.example">Book your free week</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Ironhouse Fitness Studio</p>
+      <ul class="footer-links">
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#trainers">Trainers</a></li>
+        <li><a href="#membership">Membership</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
