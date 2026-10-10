@@ -12,8 +12,8 @@
   --color-surface-alt: #1b1e1b;
   --color-text: #f2f4f0;
   --color-text-muted: #a8aea6;
-  --color-primary: #3ec8ff;        
-  --color-primary-dark: #3ec8ff;   /* Light blue */
+  --color-primary: #3ec8ff;
+  --color-primary-dark: #1ea8e0; /* Distinct hover tone */   /* Light blue */
   --color-on-primary: #111311;
   --color-accent: #ff6b35;         /* ember orange */
   --color-border: #2c302c;
@@ -29,7 +29,9 @@
 /* 3. Base */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Offsets scroll position for the sticky header */
 }
+
 
 body {
   margin: 0;
@@ -38,7 +40,8 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   /* Safety net against horizontal scroll on any device */
-  overflow-x: hidden;
+    overflow-x: clip; /* Prevents horizontal scroll without breaking position: sticky */
+
 }
 
 img {
@@ -130,19 +133,27 @@ a {
   color: var(--color-primary);
 }
 
-.nav-cta {
+.nav-links .nav-cta {
   background: var(--color-primary);
-  color: var(--color-on-primary) !important;
+  color: var(--color-on-primary);
   padding: 0.45rem 0.9rem;
   border-radius: 999px;
   font-weight: 700;
+  transition: background 0.15s ease;
 }
+
+.nav-links .nav-cta:hover,
+.nav-links .nav-cta:focus-visible {
+  background: var(--color-primary-dark);
+  color: var(--color-on-primary);
+}
+
 
 /* 5. Hero */
 .hero {
   padding-block: var(--space-section);
   background:
-    radial-gradient(60rem 30rem at 80% -10%, rgba(216, 255, 62, 0.12), transparent 60%),
+    radial-gradient(60rem 30rem at 80% -10%, rgba(62, 200, 255, 0.12), transparent 60%),
     var(--color-bg);
 }
 
@@ -176,7 +187,7 @@ a {
   margin-top: 1.75rem;
 }
 
-/* 6. Buttons */
+/* 7. Buttons */
 .btn {
   display: inline-block;
   padding: 0.7rem 1.4rem;
@@ -209,6 +220,12 @@ a {
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
 
 /* 7. Sections */
 .section {
@@ -274,7 +291,7 @@ a {
 
 /* Schedule: on small screens, restack into one card per time slot.
    Same markup — each row becomes a block, day names come from ::before. */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .schedule-grid {
     display: flex;
     flex-direction: column;
