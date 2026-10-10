@@ -9,7 +9,7 @@
 :root {
   --color-bg: #111311;
   --color-surface: #1b1e1b;
-  --color-surface-alt: #161816;
+  --color-surface-alt: #1b1e1b;
   --color-text: #f2f4f0;
   --color-text-muted: #a8aea6;
   --color-primary: #3ec8ff;        
@@ -349,6 +349,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  --trainer-accent: var(--color-primary);
+  border-top: 3px solid var(--trainer-accent);
 }
 
 .trainer-card h3 {
@@ -362,7 +364,7 @@ a {
 }
 
 .trainer-card .role {
-  color: var(--color-primary);
+  color: var(--trainer-accent);
   font-weight: 700;
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -373,7 +375,7 @@ a {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: var(--trainer-accent);
   color: var(--color-on-primary);
   display: flex;
   align-items: center;
@@ -513,3 +515,8 @@ a {
     flex-wrap: wrap;
   }
 }
+
+.trainer-logan { --trainer-accent: #3ec8ff; }
+.trainer-mubeen { --trainer-accent: #ff6b35; }
+.trainer-nabiha { --trainer-accent: #f36bff; }
+.trainer-muzzammil { --trainer-accent: #3ec8ff; }
