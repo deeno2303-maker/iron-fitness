@@ -1,8 +1,3 @@
-/* ============================================================
-   Ironhouse Fitness Studio — styles
-   Plain CSS3: custom properties, Flexbox, Grid, no frameworks.
-   ============================================================ */
-
 /* 1. Global box-sizing (requirement) */
 *,
 *::before,
@@ -17,14 +12,14 @@
   --color-surface-alt: #161816;
   --color-text: #f2f4f0;
   --color-text-muted: #a8aea6;
-  --color-primary: #d8ff3e;        /* volt lime */
-  --color-primary-dark: #aacc22;
+  --color-primary: #3ec8ff;        
+  --color-primary-dark: #3ec8ff;   /* Light blue */
   --color-on-primary: #111311;
   --color-accent: #ff6b35;         /* ember orange */
   --color-border: #2c302c;
-  --color-strength: #d8ff3e;
+  --color-strength: #3ec8ff;       /* Light blue */
   --color-conditioning: #ff6b35;
-  --color-mobility: #6bc5ff;
+  --color-mobility: #f36bff;       /* M Light Magenta */
 
   --radius: 14px;
   --max-width: 1120px;
