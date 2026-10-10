@@ -334,6 +334,11 @@ a {
 }
 
 /* 9. Trainers — Flexbox (real flex use, wraps naturally) */
+.trainer-logan { --trainer-accent: #3ec8ff; }
+.trainer-mubeen { --trainer-accent: #ff6b35; }
+.trainer-nabiha { --trainer-accent: #f36bff; }
+.trainer-muzzammil { --trainer-accent: #3ec8ff; }
+
 .trainer-flex {
   display: flex;
   flex-wrap: wrap;
@@ -516,7 +521,4 @@ a {
   }
 }
 
-.trainer-logan { --trainer-accent: #3ec8ff; }
-.trainer-mubeen { --trainer-accent: #ff6b35; }
-.trainer-nabiha { --trainer-accent: #f36bff; }
-.trainer-muzzammil { --trainer-accent: #3ec8ff; }
+
