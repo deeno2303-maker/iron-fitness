@@ -85,7 +85,7 @@ pushed before GitHub can deploy them.
 ├── vite.config.js             # Vite, React, and Tailwind plugin setup
 └── src/
     ├── main.jsx               # React application bootstrap
-    ├── App.jsx                # Page composition
+    ├── App.jsx                # Header, main landmark, and footer composition
     ├── index.css              # Tailwind import, theme tokens, base styles
     ├── data/
     │   └── studio.js          # Hardcoded classes, trainers, tiers, nav links
@@ -94,6 +94,7 @@ pushed before GitHub can deploy them.
     │   └── hero-gym.jpg       # Gym showcase image
     └── components/
         ├── Header.jsx
+        ├── MainContent.jsx    # Hero, showcase, and page sections
         ├── Hero.jsx
         ├── GymShowcase.jsx
         ├── Schedule.jsx
@@ -111,9 +112,9 @@ Site content is kept in `src/data/studio.js` and imported by the components
 that display it. Update this file to change the schedule, trainers, membership
 tiers, or navigation links.
 
-The schedule filter and booking toggles use React state in the browser. The
-booking controls are a demonstration only: they do not submit reservations,
-check availability, or save bookings after the page is refreshed. The trial
+The schedule filter and class-interest toggles use React state in the browser.
+The interest toggle is a demonstration only: it does not submit reservations,
+check availability, or save choices after the page is refreshed. The trial
 booking link opens the visitor's email application; it is not an online booking
 form. The displayed schedule, prices, contact details, and membership terms are
 sample site content and should be verified before public launch.

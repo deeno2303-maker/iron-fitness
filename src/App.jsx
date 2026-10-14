@@ -1,10 +1,5 @@
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import GymShowcase from "./components/GymShowcase";
-import Schedule from "./components/Schedule";
-import Trainers from "./components/Trainers";
-import Membership from "./components/Membership";
-import Contact from "./components/Contact";
+import MainContent from "./components/MainContent";
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -12,12 +7,7 @@ export default function App() {
     <>
       <Header />
       <main id="main">
-        <Hero />
-        <GymShowcase />
-        <Schedule />
-        <Trainers />
-        <Membership />
-        <Contact />
+        <MainContent />
       </main>
       <Footer />
     </>

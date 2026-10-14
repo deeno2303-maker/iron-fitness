@@ -34,6 +34,15 @@
   * {
     border-color: var(--color-line);
   }
+  :where(a, button):focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 @utility hero-glow {
