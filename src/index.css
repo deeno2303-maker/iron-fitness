@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Ironhouse design tokens (from Assignment 1) -> Tailwind classes like bg-bg, text-primary */
+@theme {
+  --color-bg: #111311;
+  --color-surface: #1b1e1b;
+  --color-text: #f2f4f0;
+  --color-muted: #a8aea6;
+  --color-primary: #3ec8ff;
+  --color-primary-dark: #1ea8e0;
+  --color-on-primary: #111311;
+  --color-accent: #ff6b35;
+  --color-line: #2c302c;
+  --color-strength: #3ec8ff;
+  --color-conditioning: #ff6b35;
+  --color-mobility: #f36bff;
+  --radius-card: 14px;
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  * {
+    border-color: var(--color-line);
+  }
+}
+
+@utility hero-glow {
+  background:
+    radial-gradient(60rem 30rem at 80% -10%, rgb(62 200 255 / 0.12), transparent 60%),
+    radial-gradient(40rem 24rem at 0% 110%, rgb(255 107 53 / 0.1), transparent 60%);
+}
