@@ -47,6 +47,21 @@ Deploy the contents of `dist/` to a static web host that supports single-page
 sites. Vite's `base` option may need to be configured if deploying to a
 subdirectory rather than a domain root.
 
+### GitHub Pages deployment
+
+The workflow in `.github/workflows/deploy.yml` builds the site and deploys the
+generated `dist/` directory whenever changes are pushed to `main` (or when the
+workflow is started manually from GitHub Actions). GitHub Actions builds use
+the `/iron-fitness/` base path required by this repository's Pages URL:
+`https://deeno2303-maker.github.io/iron-fitness/`. Local development keeps the
+root path so `npm run dev` works at `http://localhost:5173/`.
+
+In the repository settings, open **Pages** and set the build and deployment
+source to **GitHub Actions**. Push the deployment changes to `main`, then check
+the **Actions** tab for the workflow result. The site is available after the
+deployment job succeeds. Repository changes made locally must be committed and
+pushed before GitHub can deploy them.
+
 ## Features
 
 - Header navigation with links to the main page sections and a call to action.
