@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Ironhouse design tokens (from Assignment 1) -> Tailwind classes like bg-bg, text-primary */
-:root {
+@theme {
   --color-bg: #111311;
   --color-surface: #1b1e1b;
   --color-text: #f2f4f0;
@@ -45,10 +45,8 @@
   }
 }
 
-@layer utilities {
-  .hero-glow {
-    background:
-      radial-gradient(60rem 30rem at 80% -10%, rgb(62 200 255 / 0.12), transparent 60%),
-      radial-gradient(40rem 24rem at 0% 110%, rgb(255 107 53 / 0.1), transparent 60%);
-  }
+@utility hero-glow {
+  background:
+    radial-gradient(60rem 30rem at 80% -10%, rgb(62 200 255 / 0.12), transparent 60%),
+    radial-gradient(40rem 24rem at 0% 110%, rgb(255 107 53 / 0.1), transparent 60%);
 }
