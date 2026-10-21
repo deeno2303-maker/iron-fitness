@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #111311;
+  --color-steel: #1b1e1b;
+  --color-iron: #2c302c;
+  --color-chalk: #f2f4f0;
+  --color-muted: #a8aea6;
+  --color-blaze: #3ec8ff;
+  --color-blaze-dark: #1ea8e0;
+  --color-accent: #ff6b35;
+  --color-strength: #3ec8ff;
+  --color-conditioning: #ff6b35;
+  --color-mobility: #f36bff;
+  --color-ok: #3ccf7a;
+  --radius-card: 14px;
+  --font-display: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  @apply m-0 overflow-x-hidden bg-ink text-chalk font-body antialiased;
+  line-height: 1.6;
+}
+
+* {
+  border-color: var(--color-iron);
+}
+
+:where(a, button):focus-visible {
+  outline: 3px solid var(--color-blaze);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@utility section-title {
+  @apply text-3xl font-extrabold md:text-4xl;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
+}
+
+@utility hero-glow {
+  background:
+    radial-gradient(60rem 30rem at 80% -10%, rgb(62 200 255 / 0.12), transparent 60%),
+    radial-gradient(40rem 24rem at 0% 110%, rgb(255 107 53 / 0.1), transparent 60%);
+}

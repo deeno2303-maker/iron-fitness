@@ -1,14 +1,13 @@
 {
   "name": "iron-fitness",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
-  "dependencies": { "react": "^19.0.0", "react-dom": "^19.0.0" },
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n server,client -c red,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "seed": "npm --prefix server run seed"
+  },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.9",
-    "@vitejs/plugin-react": "^4.3.4",
-    "tailwindcss": "^4.0.9",
-    "vite": "^6.2.0"
+    "concurrently": "^9.1.0"
   }
 }
