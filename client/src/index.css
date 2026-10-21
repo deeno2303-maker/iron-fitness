@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #111311;
+  --color-steel: #1b1e1b;
+  --color-iron: #2c302c;
+  --color-chalk: #f2f4f0;
+  --color-muted: #a8aea6;
+  --color-blaze: #3ec8ff;
+  --color-blaze-dark: #1ea8e0;
+  --color-accent: #ff6b35;
+  --color-strength: #3ec8ff;
+  --color-conditioning: #ff6b35;
+  --color-mobility: #f36bff;
+  --color-ok: #3ccf7a;
+  --radius-card: 14px;
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Barlow", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  @apply m-0 overflow-x-hidden bg-ink text-chalk font-body antialiased;
+  line-height: 1.6;
+}
+
+* {
+  border-color: var(--color-iron);
+}
+
+:where(a, button):focus-visible {
+  outline: 3px solid var(--color-blaze);
+  outline-offset: 3px;
+}
+
+:where(input, select, textarea):focus-visible {
+  outline: 3px solid var(--color-blaze);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@utility section-title {
+  @apply font-display text-4xl font-bold uppercase tracking-wide sm:text-5xl;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wide transition duration-200;
+}
+
+@utility hero-glow {
+  background:
+    radial-gradient(60rem 34rem at 82% 8%, rgb(62 200 255 / 0.12), transparent 62%),
+    radial-gradient(42rem 26rem at 4% 100%, rgb(255 107 53 / 0.08), transparent 62%);
+}
+
+@utility section-kicker {
+  @apply mb-3 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-blaze;
+}
+
+@utility card-hover {
+  @apply transition duration-200 hover:-translate-y-1 hover:border-blaze/60 hover:shadow-lg hover:shadow-black/20;
+}
