@@ -27,8 +27,8 @@ The server requires Node.js 20 or newer. To send trial-request emails, add a Gma
 | POST | /api/interests/toggle | Bearer | { classId, interested } |
 
 ## Deploy
-- Backend: Railway, root dir `server`, vars `DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL` (your Vercel URL), and `SMTP_USER`/`SMTP_PASS` for trial-request email.
-- Frontend: Vercel, root dir `client`, preset Vite, var `VITE_API_URL` (your Railway URL).
+- Backend: Render, root dir `server`, vars `DATABASE_URL`, `JWT_SECRET`, `CLIENT_URL` (your Vercel URL), and `SMTP_USER`/`SMTP_PASS` for trial-request email.
+- Frontend: Vercel, root dir `client`, preset Vite, var `VITE_API_URL` (your Render URL).
 - GitHub Pages: the `Deploy to GitHub Pages` workflow builds the `client/` app. Set the repository Actions variable `VITE_API_URL` to your deployed backend URL, and include `https://deeno2303-maker.github.io` in the backend's `CLIENT_URL`.
 
 ## Check .env is not committed
