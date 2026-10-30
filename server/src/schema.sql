@@ -58,3 +58,30 @@ CREATE TABLE IF NOT EXISTS trial_requests (
   goals             TEXT NOT NULL,
   created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Membership purchases and the prices charged at checkout
+CREATE TABLE IF NOT EXISTS orders (
+  id                         BIGSERIAL PRIMARY KEY,
+  user_id                    INT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+  stripe_checkout_session_id TEXT UNIQUE,
+  stripe_subscription_id      TEXT,
+  status                     TEXT NOT NULL DEFAULT 'pending'
+                             CHECK (status IN ('pending', 'paid', 'checkout_failed')),
+  currency                   CHAR(3) NOT NULL DEFAULT 'zar',
+  total_amount               INT NOT NULL CHECK (total_amount > 0),
+  created_at                 TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  paid_at                    TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS orders_user_id_created_at_idx
+  ON orders (user_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id          BIGSERIAL PRIMARY KEY,
+  order_id    BIGINT NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  tier_id     TEXT REFERENCES membership_tiers(id) ON DELETE SET NULL,
+  product_name TEXT NOT NULL,
+  quantity    INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+  unit_amount INT NOT NULL CHECK (unit_amount > 0),
+  currency    CHAR(3) NOT NULL DEFAULT 'zar'
+);
