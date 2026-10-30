@@ -1,6 +1,6 @@
-# Ironhouse Fitness Studio — Assignment 3 Assessment Guide
+# Ironhouse Fitness Studio — Assignment 4 Assessment Guide
 
-This guide is your presentation cheat sheet for the **Assignment 3 Assessment**. It explains your project architecture, folder structure, database schema, authentication flow, and deployment setup in simple, confident plain English.
+This guide is your presentation cheat sheet for the **Assignment 4 Assessment**. It explains your project architecture, database schema, authentication, Stripe Checkout payments, and deployment setup.
 
 ---
 
@@ -21,6 +21,8 @@ iron-fitness/
 │   │   │   ├── AuthModal.jsx   # Login & Signup popup modal with tabs
 │   │   │   ├── BookToggle.jsx  # Controlled interest toggle button
 │   │   │   ├── ClassCard.jsx   # Individual class card component
+│   │   │   ├── CheckoutSuccess.jsx # Checks webhook-confirmed order status
+│   │   │   ├── CheckoutCancelled.jsx # Checkout cancellation screen
 │   │   │   ├── Contact.jsx     # Accessible free-trial request form
 │   │   │   ├── Footer.jsx      # Navigation links and copyright
 │   │   │   ├── GymShowcase.jsx # Facility photo showcase
@@ -54,8 +56,12 @@ iron-fitness/
 │   │   │   ├── trainers.js     # GET /api/trainers
 │   │   │   ├── tiers.js        # GET /api/tiers
 │   │   │   ├── interests.js    # GET /api/interests & POST toggle
-│   │   │   └── trialRequests.js # Save trial enquiries & email notification
+│   │   │   ├── trialRequests.js # Save trial enquiries & email notification
+│   │   │   ├── checkout.js     # Authenticated membership Checkout Sessions
+│   │   │   ├── orders.js       # Authenticated order lookup
+│   │   │   └── stripeWebhook.js # Verifies Stripe and records paid orders
 │   │   ├── db.js               # PostgreSQL connection pool using 'pg'
+│   │   ├── stripeClient.js     # Server-side Stripe client
 │   │   ├── schema.sql          # Table definitions (Users, Classes, etc.)
 │   │   ├── seed.js             # Migrates schema & seeds Week 2 data into DB
 │   │   └── server.js           # Main Express server entry point & CORS
@@ -72,7 +78,7 @@ iron-fitness/
 
 ## 2. Database Schema (Explained in Plain English)
 
-Our database uses PostgreSQL. We have 6 tables that model the gym's operations:
+Our database uses PostgreSQL. Eight tables model the gym's operations:
 
 ### 1. `users` Table
 - **Purpose**: Stores registered members who create accounts on the site.
@@ -129,9 +135,58 @@ Our database uses PostgreSQL. We have 6 tables that model the gym's operations:
 
 `POST /api/trial-requests` validates the form, saves it in this table, then uses Gmail SMTP to email all submitted details to `slowmoe.7860@gmail.com`. The API reports whether the request was saved and whether the recipient accepted the notification.
 
+### 7. `orders` Table
+- **Purpose**: One record for each membership checkout, tied to the signed-in member.
+- **Important columns**: `user_id`, Stripe Checkout Session ID, Stripe subscription ID, status, currency, total amount in cents, and `paid_at`.
+- A new order starts as `pending`. Only a verified Stripe webhook changes it to `paid`.
+
+### 8. `order_items` Table
+- **Purpose**: A snapshot of the membership tier and price purchased for an order.
+- **Important columns**: `order_id`, `tier_id`, product name, quantity, unit amount in cents, and currency.
+- The order item stores the database price used to create the Stripe recurring price; the browser never supplies a price.
+
+The SQL table name is `order_items` (PostgreSQL folds unquoted mixed-case names to lowercase).
+
 ---
 
-## 3. How Authentication & Sessions Work
+## 3. Stripe Checkout and Payment Confirmation
+
+Membership prices are monthly, so the membership buttons start a Stripe **subscription** Checkout Session in test mode.
+
+1. A visitor must sign in. The `POST /api/checkout` route also enforces JWT authentication, so hiding the button is not the security boundary.
+2. The server looks up the selected tier and price in `membership_tiers`, converts the stored Rand price to cents, and creates a `pending` order plus an `order_items` snapshot.
+3. The server creates the Stripe Checkout Session using a monthly recurring price. It never trusts a price from the browser.
+4. Stripe redirects back to the success page. That page checks `GET /api/orders/session/:sessionId` several times while the webhook is arriving.
+5. `POST /api/stripe/webhook` uses the raw request body and `STRIPE_WEBHOOK_SECRET` to verify Stripe's signature. Only a verified `checkout.session.completed` event with `payment_status: paid` changes the matching order to `paid`.
+6. Repeated webhook deliveries are safe: an already-paid order is not rewritten, and a mismatched session cannot update an order.
+
+### Local test-mode setup
+
+1. Create a Stripe account, switch to **Test mode**, and put its `sk_test_...` secret in `server/.env` as `STRIPE_SECRET_KEY`. Never use a secret key in the frontend.
+2. Run `npm run seed` so the schema creates `orders` and `order_items`.
+3. Start the app with `npm run dev`. In another terminal, run:
+
+   ```bash
+   stripe listen --forward-to localhost:5000/api/stripe/webhook
+   ```
+
+4. Copy the CLI's `whsec_...` value to `STRIPE_WEBHOOK_SECRET` in `server/.env`, then restart the backend.
+5. Sign in, choose a membership, and pay in Stripe Checkout with `4242 4242 4242 4242`, any future expiry date, and any CVC.
+6. The success page should show **Payment confirmed** and an order number. In Stripe Dashboard's Test mode, inspect the subscription/payment; in PostgreSQL, show the matching `orders` and `order_items` rows:
+
+   ```sql
+   SELECT o.id, o.user_id, o.status, o.total_amount, o.currency,
+          oi.product_name, oi.quantity, oi.unit_amount
+   FROM orders o
+   JOIN order_items oi ON oi.order_id = o.id
+   ORDER BY o.created_at DESC;
+   ```
+
+For a deployed test, configure the backend's test secret and a Stripe webhook endpoint at `https://<backend-host>/api/stripe/webhook`. Subscribe it to `checkout.session.completed`, copy its signing secret to `STRIPE_WEBHOOK_SECRET`, and add the frontend origin to `CLIENT_URL`. Keep all Stripe secrets in backend environment variables.
+
+---
+
+## 4. How Authentication & Sessions Work
 
 ### 1. Registration (`POST /api/auth/signup`)
 1. User enters their full name, email, and password (minimum 6 characters).
@@ -165,7 +220,7 @@ Our database uses PostgreSQL. We have 6 tables that model the gym's operations:
 
 ---
 
-## 4. How the Frontend Connects to the Real API
+## 5. How the Frontend Connects to the Real API
 
 In `client/src/api.js`, all network requests are centralized:
 - `VITE_API_URL` determines the backend URL (e.g. `https://ironhouse-api.up.railway.app` in production, or `http://localhost:5000` locally).
@@ -175,7 +230,7 @@ In `client/src/api.js`, all network requests are centralized:
 
 ---
 
-## 5. Security & Environment Variables
+## 6. Security & Environment Variables
 
 - `.env` files are strictly included in `.gitignore` at both the root and subfolder levels:
   - No database connection strings or JWT secrets are ever committed to GitHub.
@@ -183,7 +238,7 @@ In `client/src/api.js`, all network requests are centralized:
 
 ---
 
-## 6. How to Run Locally
+## 7. How to Run Locally
 
 ### 1. Install dependencies:
 ```bash
@@ -210,6 +265,8 @@ SMTP_SECURE=true
 SMTP_USER=your-gmail-address@gmail.com
 SMTP_PASS=your-google-app-password
 TRIAL_TO_EMAIL=slowmoe.7860@gmail.com
+STRIPE_SECRET_KEY=sk_test_your_test_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_from_stripe_listen
 ```
 To enable email notifications, turn on Google 2-Step Verification and create an [App Password](https://myaccount.google.com/apppasswords) in your Google Account security settings. Put the Gmail address and App Password in `SMTP_USER` and `SMTP_PASS` in `server/.env` (remove spaces from the App Password). Keep these values private; do not put them in frontend environment variables or commit the `.env` file. The form still stores requests in PostgreSQL if SMTP is not configured or delivery fails, and tells the visitor whether the email was sent. See [Google's App Password help](https://support.google.com/accounts/answer/185833) if that option is unavailable.
 
@@ -218,7 +275,7 @@ To enable email notifications, turn on Google 2-Step Verification and create an 
 # Inside /server:
 npm run seed
 ```
-This automatically executes `schema.sql` (creating all tables) and inserts all the classes, trainers, and membership tiers into PostgreSQL. It also creates the `trial_requests` table.
+This automatically executes `schema.sql` (creating all tables, including `orders` and `order_items`) and inserts all the classes, trainers, and membership tiers into PostgreSQL.
 
 ### 4. Start the Application:
 ```bash
@@ -232,7 +289,7 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-## 7. Step-by-Step Live Deployment (Railway + Vercel)
+## 8. Step-by-Step Live Deployment (Railway + Vercel)
 
 ### Step A: Free PostgreSQL Database on Neon
 1. Go to [neon.tech](https://neon.tech) and create a free account.
@@ -255,6 +312,8 @@ Open `http://localhost:5173` in your browser.
    - `SMTP_USER`: The Gmail account used to send the notification.
    - `SMTP_PASS`: Its Google App Password (not the usual Gmail password).
    - `TRIAL_TO_EMAIL`: `slowmoe.7860@gmail.com`.
+   - `STRIPE_SECRET_KEY`: Stripe test-mode secret (`sk_test_...`).
+   - `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret (`whsec_...`).
    - `NODE_ENV`: `production`
 6. Under **Settings** → **Networking**, click **Generate Domain** (e.g. `ironhouse-production.up.railway.app`).
 7. Test the live health endpoint in your browser: `https://your-railway-url.up.railway.app/api/health`.
@@ -272,7 +331,7 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-## 8. Answers to Common Assessment Questions
+## 9. Answers to Common Assessment Questions
 
 **Q: Where is your database hosted and how does Express talk to it?**  
 > *"Our database is PostgreSQL hosted on Neon. In `server/src/db.js`, we use the `pg` package (node-postgres) with a connection pool (`Pool`). It reads `DATABASE_URL` from the `.env` file and executes parameterized SQL queries against the database."*
@@ -288,3 +347,6 @@ Open `http://localhost:5173` in your browser.
 
 **Q: How is the database seeded?**  
 > *"We have a script `server/src/seed.js`. When we run `npm run seed`, it reads `schema.sql` to initialize the tables with `CREATE TABLE IF NOT EXISTS`, and then inserts our classes, trainers, and membership tiers using `ON CONFLICT DO UPDATE` so it can be re-run safely at any time."*
+
+**Q: How do you know an order is really paid?**
+> *"The browser never marks an order as paid. Stripe sends a signed webhook to `/api/stripe/webhook`; the server verifies its signature with `STRIPE_WEBHOOK_SECRET` and checks the completed Checkout Session. Only then does the server update the matching order to `paid`."*
