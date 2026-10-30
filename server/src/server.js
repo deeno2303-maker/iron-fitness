@@ -10,6 +10,9 @@ const trainerRoutes = require("./routes/trainers");
 const tierRoutes = require("./routes/tiers");
 const interestRoutes = require("./routes/interests");
 const trialRequestRoutes = require("./routes/trialRequests");
+const checkoutRoutes = require("./routes/checkout");
+const orderRoutes = require("./routes/orders");
+const stripeWebhookRoutes = require("./routes/stripeWebhook");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,6 +33,8 @@ app.use(
     },
   })
 );
+// Stripe signature verification requires the raw body before JSON parsing.
+app.use("/api/stripe/webhook", stripeWebhookRoutes);
 app.use(express.json());
 
 // Health check — proves the API is live and the DB is reachable
@@ -52,6 +57,8 @@ app.use("/api/trainers", trainerRoutes);
 app.use("/api/tiers", tierRoutes);
 app.use("/api/interests", interestRoutes);
 app.use("/api/trial-requests", trialRequestRoutes);
+app.use("/api/checkout", checkoutRoutes);
+app.use("/api/orders", orderRoutes);
 
 // 404 for unknown API routes
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));
