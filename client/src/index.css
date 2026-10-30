@@ -28,13 +28,25 @@ body {
   line-height: 1.6;
 }
 
-* {
-  border-color: var(--color-iron);
+@layer base {
+  * {
+    border-color: var(--color-iron);
+  }
 }
 
 :where(a, button):focus-visible {
   outline: 3px solid var(--color-blaze);
   outline-offset: 3px;
+}
+
+:where(a, button) {
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: 180ms;
+  transition-timing-function: ease-out;
+}
+
+:where(a, button:not(:disabled)):active {
+  transform: scale(0.98);
 }
 
 :where(input, select, textarea):focus-visible {
@@ -45,6 +57,14 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  :where(a, button) {
+    transition-duration: 0.01ms;
+  }
+
+  :where(a, button:not(:disabled)):active {
+    transform: none;
   }
 }
 
