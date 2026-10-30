@@ -14,6 +14,32 @@ export default function Footer() {
               34 Essex Terrace, Westville
               <span className="sr-only"> (opens in Google Maps)</span>
             </a>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=34+Essex+Terrace%2C+Westville"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-4 inline-block rounded-full border border-iron px-3 py-1 text-xs font-bold text-chalk no-underline hover:border-blaze"
+            >
+              Get directions
+              <span className="sr-only"> (opens in Google Maps)</span>
+            </a>
+            <p className="mb-0 mt-2">
+              <a
+                href="mailto:slowmoe.7860@gmail.com"
+                className="text-muted underline decoration-blaze/60 underline-offset-4 hover:text-chalk"
+              >
+                slowmoe.7860@gmail.com
+              </a>
+            </p>
+            <p className="mb-0 mt-1">
+              <span className="text-muted">Moinuddeen: </span>
+              <a
+                href="tel:+27680199935"
+                className="text-muted underline decoration-blaze/60 underline-offset-4 hover:text-chalk"
+              >
+                068 0199935
+              </a>
+            </p>
           </div>
           <nav aria-label="Footer navigation">
             <ul className="m-0 flex list-none gap-5 p-0">
