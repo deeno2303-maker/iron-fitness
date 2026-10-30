@@ -77,8 +77,8 @@ export default function Membership() {
                 disabled={busyTier !== null}
                 className={`rounded-full px-6 py-3 text-center font-bold transition-colors disabled:cursor-wait disabled:opacity-60 ${
                   tier.featured
-                    ? "bg-blaze text-ink hover:bg-blaze-dark"
-                    : "border border-iron text-chalk hover:border-blaze"
+                    ? "bg-blaze text-ink hover:bg-accent"
+                    : "border border-iron text-chalk hover:border-accent hover:bg-accent hover:text-ink"
                 }`}
               >
                 {busyTier === tier.id ? "Starting checkout…" : `Choose ${tier.name}`}
