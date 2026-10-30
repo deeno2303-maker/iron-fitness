@@ -11,6 +11,8 @@ const experienceOptions = [
   ["returning", "Returning after a break"],
 ];
 
+const trialRequestEmail = "slowmoe.7860@gmail.com";
+
 export default function Contact() {
   const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
@@ -40,6 +42,34 @@ export default function Contact() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function handleSendByEmail(e) {
+    const form = e.currentTarget.form;
+    if (!form.reportValidity()) return;
+
+    const formData = new FormData(form);
+    const experienceValue = formData.get("experienceLevel");
+    const experienceLabel = experienceOptions.find(([value]) => value === experienceValue)?.[1] || experienceValue;
+    const name = formData.get("name").trim();
+    const subject = `Free trial request from ${name}`;
+    const body = [
+      "Hello Ironhouse,",
+      "",
+      "I would like to request a free trial class. Here are my details:",
+      "",
+      `Name: ${name}`,
+      `Email: ${formData.get("email").trim()}`,
+      `Phone: ${formData.get("phone").trim() || "Not provided"}`,
+      `Training interest: ${formData.get("preferredSession")}`,
+      `Training experience: ${experienceLabel}`,
+      `Goals: ${formData.get("goals").trim()}`,
+      "Consent to be contacted: Yes",
+      "",
+      "Thank you.",
+    ].join("\n");
+
+    window.location.href = `mailto:${trialRequestEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   return (
@@ -154,7 +184,7 @@ export default function Contact() {
           </div>
 
           <p id="trial-form-help" className="text-sm text-muted">
-            Required fields are marked with <span className="font-bold text-blaze">*</span>. Your request will be sent to our team at slowmoe.7860@gmail.com.
+            Required fields are marked with <span className="font-bold text-blaze">*</span>. Submit the form to send your request, or open a pre-filled email draft to send it yourself.
           </p>
           <label className="flex items-start gap-3 text-sm text-muted">
             <input
@@ -188,6 +218,16 @@ export default function Contact() {
           >
             {submitting ? "Sending request…" : "Request a free trial"}
           </button>
+          <button
+            type="button"
+            onClick={handleSendByEmail}
+            className="btn w-full border border-iron text-chalk hover:border-accent hover:bg-accent hover:text-ink"
+          >
+            Send request by email
+          </button>
+          <p className="m-0 text-center text-xs text-muted">
+            Opens your email app with the form details filled in. Review and send the email to complete your request.
+          </p>
         </form>
       </div>
     </section>
