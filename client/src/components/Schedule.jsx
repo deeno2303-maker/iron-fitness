@@ -8,7 +8,6 @@ export default function Schedule() {
   const { user, openModal } = useAuth();
   const [filter, setFilter] = useState("All");
   const [classes, setClasses] = useState([]);
-  const [live, setLive] = useState(false);
   const [loading, setLoading] = useState(true);
   const [interests, setInterests] = useState([]);
   const [busyId, setBusyId] = useState(null);
@@ -20,10 +19,8 @@ export default function Schedule() {
     fetchClasses(filter)
       .then((rows) => {
         setClasses(rows);
-        setLive(true);
       })
       .catch(() => {
-        setLive(false);
         setClasses(filter === "All" ? fallbackClasses : fallbackClasses.filter((c) => c.type === filter));
       })
       .finally(() => setLoading(false));
@@ -61,14 +58,6 @@ export default function Schedule() {
           Browse the weekly timetable and filter by the kind of training you want to do.
         </p>
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs ${
-              live ? "bg-ok/15 text-ok" : "bg-iron text-muted"
-            }`}
-          >
-            <span className={`h-2 w-2 rounded-full ${live ? "bg-ok" : "bg-muted"}`} />
-            {live ? "Live PostgreSQL API" : "Offline – showing saved timetable"}
-          </span>
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter classes by type">
             {CLASS_TYPES.map((t) => (
               <button
