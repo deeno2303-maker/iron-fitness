@@ -1,13 +1,35 @@
 import { useEffect, useState } from "react";
-import { fetchTiers } from "../api";
+import { createCheckoutSession, fetchTiers } from "../api";
 import { tiers as fallback } from "../data/studio";
+import { useAuth } from "../context/AuthContext";
 
 export default function Membership() {
+  const { user, openModal } = useAuth();
   const [tiers, setTiers] = useState([]);
+  const [busyTier, setBusyTier] = useState(null);
+  const [checkoutError, setCheckoutError] = useState("");
 
   useEffect(() => {
     fetchTiers().then(setTiers).catch(() => setTiers(fallback));
   }, []);
+
+  async function handleCheckout(tierId) {
+    if (!user) {
+      openModal();
+      return;
+    }
+
+    setBusyTier(tierId);
+    setCheckoutError("");
+    try {
+      const returnUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
+      const { checkoutUrl } = await createCheckoutSession(tierId, returnUrl);
+      window.location.assign(checkoutUrl);
+    } catch (error) {
+      setCheckoutError(error.message);
+      setBusyTier(null);
+    }
+  }
 
   return (
     <section id="membership" aria-labelledby="membership-heading" className="py-14 md:py-24">
@@ -15,6 +37,7 @@ export default function Membership() {
         <p className="section-kicker"><span className="h-px w-8 bg-blaze" />Make training a habit</p>
         <h2 id="membership-heading" className="section-title mb-2">Membership options</h2>
         <p className="mb-10 max-w-2xl text-lg text-muted">Straightforward options to find the level of training that works for you.</p>
+        {checkoutError && <p role="alert" className="mb-6 text-sm text-red-400">{checkoutError}</p>}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {tiers.map((tier) => (
             <article
@@ -38,16 +61,18 @@ export default function Membership() {
                   <li key={p}>{p}</li>
                 ))}
               </ul>
-              <a
-                href="#contact"
-                className={`rounded-full px-6 py-3 text-center font-bold no-underline transition-colors ${
+              <button
+                type="button"
+                onClick={() => handleCheckout(tier.id)}
+                disabled={busyTier !== null}
+                className={`rounded-full px-6 py-3 text-center font-bold transition-colors disabled:cursor-wait disabled:opacity-60 ${
                   tier.featured
                     ? "bg-blaze text-ink hover:bg-blaze-dark"
                     : "border border-iron text-chalk hover:border-blaze"
                 }`}
               >
-                Choose {tier.name}
-              </a>
+                {busyTier === tier.id ? "Starting checkout…" : `Choose ${tier.name}`}
+              </button>
             </article>
           ))}
         </div>
