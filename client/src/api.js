@@ -35,3 +35,12 @@ export const toggleInterest = (classId) =>
 
 export const submitTrialRequest = (formData) =>
   request("/api/trial-requests", { method: "POST", body: JSON.stringify(formData) });
+
+export const createCheckoutSession = (tierId, returnUrl) =>
+  request("/api/checkout", {
+    method: "POST",
+    body: JSON.stringify({ tierId, returnUrl }),
+  });
+
+export const fetchOrderBySession = (sessionId) =>
+  request(`/api/orders/session/${encodeURIComponent(sessionId)}`);
