@@ -1,6 +1,12 @@
 const trainingImage = `${import.meta.env.BASE_URL}images/training.jpg`;
 
 export default function Hero() {
+  const disciplines = [
+    ["Strength", "bg-strength"],
+    ["Conditioning", "bg-conditioning"],
+    ["Mobility", "bg-mobility"],
+  ];
+
   return (
     <section id="top" className="hero-glow relative overflow-hidden border-b border-iron">
       <div className="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 md:grid-cols-[1fr_0.95fr] md:gap-14 md:py-24">
@@ -26,9 +32,9 @@ export default function Hero() {
             </a>
           </div>
           <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold uppercase tracking-widest text-muted">
-            {["Strength", "Conditioning", "Mobility"].map((discipline) => (
+            {disciplines.map(([discipline, color]) => (
               <span key={discipline} className="flex items-center gap-2">
-                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+                <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${color}`} />
                 {discipline}
               </span>
             ))}
