@@ -8,6 +8,18 @@ const avatarColor = {
   Mobility: "bg-mobility",
 };
 
+const specialtyColor = {
+  Strength: "text-strength",
+  Conditioning: "text-conditioning",
+  Mobility: "text-mobility",
+};
+
+const specialtyBorder = {
+  Strength: "border-strength hover:shadow-md hover:shadow-strength/10",
+  Conditioning: "border-conditioning hover:shadow-md hover:shadow-conditioning/10",
+  Mobility: "border-mobility hover:shadow-md hover:shadow-mobility/10",
+};
+
 const trainerPortraits = {
   logan: `${import.meta.env.BASE_URL}images/logan-naidoo.jpeg`,
   mubeen: `${import.meta.env.BASE_URL}images/mubeen-wahab.jpeg`,
@@ -36,8 +48,8 @@ export default function Trainers() {
             return (
               <article
                 key={t.id}
-                className={`min-w-0 overflow-hidden rounded-card border bg-ink transition-colors ${
-                  expanded ? "border-blaze/70" : "border-iron hover:border-blaze/50"
+                className={`min-w-0 overflow-hidden rounded-card border bg-ink transition-colors duration-200 ${
+                  specialtyBorder[t.type] || "border-iron hover:border-blaze/50"
                 }`}
               >
                 <button
@@ -63,7 +75,9 @@ export default function Trainers() {
                       <span className="block font-display text-2xl font-bold uppercase text-chalk">
                         {t.name}
                       </span>
-                      <span className="mt-1 block text-sm font-semibold text-blaze">{t.role}</span>
+                      <span className={`mt-1 block text-sm font-semibold ${specialtyColor[t.type] || "text-blaze"}`}>
+                        {t.role}
+                      </span>
                     </span>
                   </span>
                   <span className="flex items-center justify-between gap-3 px-5 py-4 text-sm font-bold text-muted group-hover:text-chalk">
@@ -76,7 +90,7 @@ export default function Trainers() {
                 <div id={profileId} hidden={!expanded} className="border-t border-iron px-5 py-5">
                   <p className="section-kicker mb-2">Coach profile</p>
                   <p className="m-0 leading-relaxed text-muted">{t.bio}</p>
-                  <p className="mt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-chalk">
+                  <p className={`mt-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest ${specialtyColor[t.type] || "text-chalk"}`}>
                     <span aria-hidden="true" className={`h-2 w-2 rounded-full ${avatarColor[t.type] || "bg-blaze"}`} />
                     {t.type}
                   </p>
