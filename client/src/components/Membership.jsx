@@ -37,6 +37,16 @@ export default function Membership() {
         <p className="section-kicker"><span className="h-px w-8 bg-blaze" />Make training a habit</p>
         <h2 id="membership-heading" className="section-title mb-2">Membership options</h2>
         <p className="mb-10 max-w-2xl text-lg text-muted">Straightforward options to find the level of training that works for you.</p>
+        <p className="mb-6 rounded-card border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-muted">
+          <span className="font-bold text-accent">Test mode:</span> Checkout is for testing only.
+          No real payment will be taken.
+        </p>
+        {busyTier && (
+          <p role="status" aria-live="polite" className="mb-6 flex items-center gap-3 rounded-card border border-blaze/40 bg-blaze/10 px-4 py-3 text-sm text-chalk">
+            <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-blaze/30 border-t-blaze motion-reduce:animate-none" />
+            Connecting securely to Stripe Checkout. Please wait…
+          </p>
+        )}
         {checkoutError && <p role="alert" className="mb-6 text-sm text-red-400">{checkoutError}</p>}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {tiers.map((tier) => (
