@@ -67,7 +67,7 @@ export default function CheckoutSuccess() {
           <p role="alert" className="text-red-400">We could not check your order: {error}</p>
         ) : order?.status === "paid" ? (
           <>
-            <p className="text-muted">Your {order.productName} is active. A receipt will be sent by Stripe.</p>
+            <p className="text-muted">Your {order.productName} is active. A receipt will be sent to you.</p>
             <p className="mt-4 font-bold text-chalk">
               Order #{order.id} · {new Intl.NumberFormat("en-ZA", {
                 style: "currency",
@@ -78,14 +78,14 @@ export default function CheckoutSuccess() {
         ) : (
           <p role="status" aria-live="polite" className="text-muted">
             {checking
-              ? "Payment received by Checkout. Waiting for the payment confirmation webhook…"
-              : "Your order is still awaiting payment confirmation. Refresh this page in a moment; it will only show as paid after Stripe confirms it."}
+              ? "Your payment is being confirmed. Please wait a moment…"
+              : "Your order is still being confirmed. Please refresh this page in a moment."}
           </p>
         )}
         <a href={homeUrl} className="mt-8 inline-block text-blaze underline">
           Return to Ironhouse
         </a>
-        <p className="mt-6 text-xs text-muted">Order status is confirmed by Stripe’s signed webhook.</p>
+        <p className="mt-6 text-xs text-muted">Your order status is confirmed.</p>
       </section>
     </main>
   );
