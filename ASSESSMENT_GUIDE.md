@@ -158,7 +158,8 @@ Membership prices are monthly, so the membership buttons start a Stripe **subscr
 3. The server creates the Stripe Checkout Session using a monthly recurring price. It never trusts a price from the browser.
 4. Stripe redirects back to the success page. That page checks `GET /api/orders/session/:sessionId` several times while the webhook is arriving.
 5. `POST /api/stripe/webhook` uses the raw request body and `STRIPE_WEBHOOK_SECRET` to verify Stripe's signature. Only a verified `checkout.session.completed` event with `payment_status: paid` changes the matching order to `paid`.
-6. Repeated webhook deliveries are safe: an already-paid order is not rewritten, and a mismatched session cannot update an order.
+6. The webhook can attach the Checkout Session ID from its verified order metadata if it arrives before the checkout route saves that ID. It also marks a verified expired, unpaid Checkout Session as `checkout_failed`.
+7. Repeated webhook deliveries are safe: an already-paid or already-expired order is not rewritten, and a mismatched user, order, or session cannot update an order. Unmatched database writes return an error so Stripe retries delivery.
 
 ### Local test-mode setup
 
@@ -182,7 +183,9 @@ Membership prices are monthly, so the membership buttons start a Stripe **subscr
    ORDER BY o.created_at DESC;
    ```
 
-For a deployed test, configure the backend's test secret and a Stripe webhook endpoint at `https://<backend-host>/api/stripe/webhook`. Subscribe it to `checkout.session.completed`, copy its signing secret to `STRIPE_WEBHOOK_SECRET`, and add the frontend origin to `CLIENT_URL`. Keep all Stripe secrets in backend environment variables.
+For a deployed test, configure the backend's test secret and a Stripe webhook endpoint at `https://<backend-host>/api/stripe/webhook`. Subscribe it to `checkout.session.completed` and `checkout.session.expired`, copy its signing secret to the backend's `STRIPE_WEBHOOK_SECRET`, and add the frontend origin to `CLIENT_URL`. Save the environment changes and restart/redeploy the backend. Keep all Stripe secrets in backend environment variables.
+
+If Stripe shows a Checkout Session as complete and paid but its order is still pending, first confirm the webhook endpoint is enabled and its recent delivery returned HTTP 2xx. Then resend that session's `checkout.session.completed` event from the Stripe Dashboard's Test mode. The server verifies the resent event's signature and updates the matching order; never mark it paid manually in SQL.
 
 ---
 
